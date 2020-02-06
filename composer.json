@@ -5,6 +5,7 @@
         "php": "^7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "api-platform/api-pack": "^1.2",
         "doctrine/annotations": "^1.8",
         "doctrine/orm": "^2.7",
         "lexik/jwt-authentication-bundle": "^2.6",
