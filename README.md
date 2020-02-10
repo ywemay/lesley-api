@@ -1,13 +1,13 @@
-# Symfony Based JWT Authentication Server
+# Lesley API
 
-The server is based on [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle).
+Product/orders management system.
 
 ## Installation
 
 ```bash
-    git clone https://github.com/ywemay/symfony-oauth-jwt.git
+    git clone https://github.com/ywemay/lesley-api.git
 
-    cd simfony-oauth-jwt
+    cd lesley-api
 
     composer install
 ```
