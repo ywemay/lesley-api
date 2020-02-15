@@ -53,6 +53,7 @@ class ApiController extends AbstractController
      */
     public function user(){
         $user = $this->getUser();
+
         if (!$user) {
             return new JsonResponse(['username' => "anonymous", 'id' => 0], 200);
         }

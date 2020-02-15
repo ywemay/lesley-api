@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -42,6 +44,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", unique=true, nullable=true)
      */
     private $apiToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SaleOrder", mappedBy="customer", orphanRemoval=true)
+     */
+    private $saleOrders;
+
+    public function __construct()
+    {
+        $this->saleOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -124,6 +136,37 @@ class User implements UserInterface
     public function setApiToken(?string $apiToken): self
     {
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SaleOrder[]
+     */
+    public function getSaleOrders(): Collection
+    {
+        return $this->saleOrders;
+    }
+
+    public function addSaleOrder(SaleOrder $saleOrder): self
+    {
+        if (!$this->saleOrders->contains($saleOrder)) {
+            $this->saleOrders[] = $saleOrder;
+            $saleOrder->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSaleOrder(SaleOrder $saleOrder): self
+    {
+        if ($this->saleOrders->contains($saleOrder)) {
+            $this->saleOrders->removeElement($saleOrder);
+            // set the owning side to null (unless already changed)
+            if ($saleOrder->getCustomer() === $this) {
+                $saleOrder->setCustomer(null);
+            }
+        }
 
         return $this;
     }
