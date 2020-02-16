@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @Route("/api/auth")
+ * @Route("/_env(APP_SUBPATH)/lesley/api/auth")
  */
 class ApiController extends AbstractController
 {
