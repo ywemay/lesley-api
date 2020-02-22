@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
+ *   normalizationContext={"groups"={"read"}},
+ *   denormalizationContext={"groups"={"write"}},
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     collectionOperations={
  *         "get",
@@ -25,22 +28,26 @@ class SaleOrderItem
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read", "write"})
      */
     private $product;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read", "write"})
      */
     private $quantity;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read", "write"})
      */
     private $unit_price;
 
@@ -51,6 +58,7 @@ class SaleOrderItem
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read", "write"})
      */
     private $note;
 
@@ -97,7 +105,7 @@ class SaleOrderItem
     public function setUnitPrice(int $unit_price): self
     {
         $this->unit_price = $unit_price;
-
+        $this->setTotalPrice($this->getQuantity() * $unit_price);
         return $this;
     }
 

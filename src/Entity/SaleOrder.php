@@ -5,19 +5,22 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     collectionOperations={
- *         "get",
- *         "post"={"security"="is_granted('ROLE_ADMIN')"}
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"security"="is_granted('ROLE_ADMIN')"},
- *     }
+ *   normalizationContext={"groups"={"read"}},
+ *   denormalizationContext={"groups"={"write"}},
+ *   attributes={"security"="is_granted('ROLE_USER')"},
+ *   collectionOperations={
+ *     "get",
+ *     "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *   },
+ *   itemOperations={
+ *     "get",
+ *     "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *   }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SaleOrderRepository")
  */
@@ -27,22 +30,26 @@ class SaleOrder
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"read", "write"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="saleOrders")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read", "write"})
      */
     private $customer;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SaleOrderItem", mappedBy="saleOrder", orphanRemoval=true)
+     * @Groups({"read", "write"})
      */
     private $saleOrderItems;
 

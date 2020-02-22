@@ -5,10 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
+ *   normalizationContext={"groups"={"read"}},
+ *   denormalizationContext={"groups"={"write"}},
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     collectionOperations={
  *         "get",
@@ -45,16 +48,25 @@ class Country
         $this->products = new ArrayCollection();
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @Groups({"write"})
+     */
     public function setName(string $name): self
     {
         $this->name = $name;

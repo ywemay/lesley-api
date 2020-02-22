@@ -3,21 +3,29 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiResource(
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     collectionOperations={
- *         "get",
- *         "post"={"security"="is_granted('ROLE_ADMIN')"}
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"security"="is_granted('ROLE_ADMIN')"},
- *     }
+ *   normalizationContext={"groups"={"read"}},
+ *   denormalizationContext={"groups"={"write"}},
+ *   attributes={"security"="is_granted('ROLE_USER')"},
+ *   collectionOperations={
+ *     "get",
+ *     "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *   },
+ *   itemOperations={
+ *     "get",
+ *     "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *   }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ApiFilter(PropertyFilter::class)
+ * @ApiFilter(SearchFilter::class, properties={"name" : "partial"})
  */
 class Product
 {
@@ -49,16 +57,25 @@ class Product
      */
     private $country;
 
+    /**
+     * @Groups({"read"})
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @Groups({"write"})
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -66,11 +83,17 @@ class Product
         return $this;
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getSellPrice(): ?int
     {
         return $this->sell_price;
     }
 
+    /**
+     * @Groups({"write"})
+     */
     public function setSellPrice(int $sell_price): self
     {
         $this->sell_price = $sell_price;
@@ -78,11 +101,17 @@ class Product
         return $this;
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getBarcode(): ?string
     {
         return $this->barcode;
     }
 
+    /**
+     * @Groups({"write"})
+     */
     public function setBarcode(?string $barcode): self
     {
         $this->barcode = $barcode;
@@ -90,11 +119,17 @@ class Product
         return $this;
     }
 
+    /**
+     * @Groups({"read"})
+     */
     public function getCountry(): ?Country
     {
         return $this->country;
     }
 
+    /**
+     * @Groups({"write"})
+     */
     public function setCountry(?Country $country): self
     {
         $this->country = $country;

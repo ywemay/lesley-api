@@ -8,10 +8,33 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("username")
+ * @ApiResource(
+ *   normalizationContext={"groups"={"read"}},
+ *   denormalizationContext={"groups"={"write", "register"}},
+ *     attributes={
+ *      "security"="is_granted('ROLE_ADMIN')",
+ *      "pagination_items_per_page"=30
+ *     },
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *     }
+ * )
+ * @ApiFilter(PropertyFilter::class)
+ * @ApiFilter(SearchFilter::class, properties={"username" : "start"})
  */
 class User implements UserInterface
 {
@@ -25,11 +48,13 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank()
+     * @Groups({"read", "register"})
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"read", "write"})
      */
     private $roles = [];
 
