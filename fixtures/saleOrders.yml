@@ -1,0 +1,38 @@
+App\Entity\User:
+  # https://github.com/hautelook/AliceBundle/issues/437 - password encoding
+  admin:
+    username: 'admin'
+    password: <encodePassword(@admin, 'admin')>
+    roles: ['ROLE_ADMIN']
+
+  customer_{1..10}:
+    username: '<username()>'
+    password: 'notset'
+    roles: ['ROLE_CUSTOMER']
+
+App\Entity\SaleOrder:
+  order_{1..20}:
+    date: '<date_create()>'
+    customer: '@customer_*'
+
+App\Entity\Country:
+  country_jp:
+    id: 'jp'
+    name: 'Japan'
+  contry_kr:
+    id: 'kr'
+    name: 'Koreya'
+
+App\Entity\Product:
+  product_{1..100}:
+    name: <sentence(12, true)>
+    sell_price: <numberBetween(100, 90000)>
+    barcode: <ean13()>
+    country: '@country_*'
+
+App\Entity\SaleOrderItem:
+  item_{1..350}:
+    product: '@product_*'
+    quantity: '<numberBetween(1, 30)>'
+    unit_price: '<numberBetween(20, 900)>'
+    saleOrder: '@order_*'

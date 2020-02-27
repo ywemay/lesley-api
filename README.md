@@ -26,12 +26,25 @@ Generate the security keys:
 
 Edit the JWT_PASSPHRASE and CORS_ALLOW_ORIGIN variables in `.env.local` file to suit your case.
 
+See: [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle).
 
 ## Run the server
 
 ```bash
     symfony server:start
 ```
+
+## Load fixtures
+
+Write fixtures files in the fixtures/ folder.
+
+```bash
+  php bin/console hautelook:fixtures:load
+```
+
+See: [AliceBundle](https://github.com/hautelook/AliceBundle) and [alice fixtures](https://github.com/nelmio/alice).
+
+See [Faker](https://github.com/fzaninotto/Faker) for fixtures data types.
 
 ## License
 

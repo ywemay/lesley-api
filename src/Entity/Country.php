@@ -28,8 +28,7 @@ class Country
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=2)
      */
     private $id;
 
@@ -49,9 +48,18 @@ class Country
     }
 
     /**
+     * @Groups({"write"})
+     */
+     public function setId(string $id): self
+     {
+       $this->id = $id;
+       return $this;
+     }
+
+    /**
      * @Groups({"read"})
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

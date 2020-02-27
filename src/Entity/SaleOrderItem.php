@@ -39,7 +39,6 @@ class SaleOrderItem
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read", "write"})
      */
     private $product;
 
@@ -82,6 +81,25 @@ class SaleOrderItem
         return $this->product;
     }
 
+    /**
+     * @Groups("read")
+     */
+    public function getProductId(): ?int
+    {
+      return $this->getProduct()->getId();
+    }
+
+    /**
+     * @Groups("read")
+     */
+    public function getProductName(): ?string
+    {
+      return $this->getProduct()->getName();
+    }
+
+    /**
+     * @Groups("write")
+     */
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
@@ -113,6 +131,9 @@ class SaleOrderItem
         return $this;
     }
 
+    /**
+     * @Groups("read")
+     */
     public function getTotalPrice(): ?int
     {
         return $this->total_price;
@@ -142,6 +163,17 @@ class SaleOrderItem
         return $this->saleOrder;
     }
 
+    /**
+     * @Groups("read")
+     */
+    public function getSaleOrderId(): ?int
+    {
+        return $this->saleOrder->getId();
+    }
+
+    /**
+     * @Groups("write")
+     */
     public function setSaleOrder(?SaleOrder $saleOrder): self
     {
         $this->saleOrder = $saleOrder;

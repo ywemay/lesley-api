@@ -36,20 +36,19 @@ class SaleOrder
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"read", "write"})
+     * @Groups({"write"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="saleOrders")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read", "write"})
+     * @Groups({"write"})
      */
     private $customer;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\SaleOrderItem", mappedBy="saleOrder", orphanRemoval=true)
-     * @Groups({"read", "write"})
      */
     private $saleOrderItems;
 
@@ -68,6 +67,14 @@ class SaleOrder
         return $this->date;
     }
 
+    /**
+     * @Groups("read")
+     */
+    public function getOrderDate(): ?string
+    {
+      return $this->date->format('Y-m-d');
+    }
+
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
@@ -78,6 +85,22 @@ class SaleOrder
     public function getCustomer(): ?User
     {
         return $this->customer;
+    }
+
+    /**
+     * @Groups("read")
+     */
+    public function getCustomerId(): ?int
+    {
+      return $this->getCustomer()->getId();
+    }
+
+    /**
+     * @Groups("read")
+     */
+    public function getCustomerName(): ?String
+    {
+      return $this->getCustomer()->getUsername();
     }
 
     public function setCustomer(?User $customer): self
