@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,6 +23,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SaleOrderItemRepository")
+ * @ApiFilter(SearchFilter::class, properties={"product": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"saleOrder": "exact"})
  */
 class SaleOrderItem
 {
