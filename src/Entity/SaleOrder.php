@@ -20,7 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  *     "post"={"security"="is_granted('ROLE_ADMIN')"}
  *   },
  *   itemOperations={
- *     "get",
+ *     "get"={
+ *        "normalization_context"={"groups"={"read","extended"}}
+ *      },
  *     "put"={"security"="is_granted('ROLE_ADMIN')"},
  *   }
  * )
