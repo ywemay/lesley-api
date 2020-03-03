@@ -10,11 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
- *   normalizationContext={"groups"={"read"}},
+ *   normalizationContext={"groups"={"saleorder:read"}},
  *   denormalizationContext={"groups"={"write"}},
  *   attributes={"security"="is_granted('ROLE_USER')"},
  *   collectionOperations={
- *     "get",
+ *     "get"={
+ *        "normalization_context"={"groups"={"saleorder:list"}}
+ *      },
  *     "post"={"security"="is_granted('ROLE_ADMIN')"}
  *   },
  *   itemOperations={
@@ -30,20 +32,20 @@ class SaleOrder
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("read")
+     * @Groups({"saleorder:read", "saleorder:list"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="date")
-     * @Groups({"write"})
+     * @Groups({"write", "saleorder:list"})
      */
     private $date;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="saleOrders")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"write"})
+     * @Groups({"saleorder:read", "write"})
      */
     private $customer;
 
@@ -68,7 +70,7 @@ class SaleOrder
     }
 
     /**
-     * @Groups("read")
+     * @Groups({"saleorder:read", "saleorder:list"})
      */
     public function getOrderDate(): ?string
     {
@@ -88,7 +90,7 @@ class SaleOrder
     }
 
     /**
-     * @Groups("read")
+     * @Groups("saleorder:list")
      */
     public function getCustomerId(): ?int
     {
@@ -96,7 +98,7 @@ class SaleOrder
     }
 
     /**
-     * @Groups("read")
+     * @Groups("saleorder:list")
      */
     public function getCustomerName(): ?String
     {

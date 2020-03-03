@@ -16,6 +16,13 @@ Product/orders management system.
 
 Copy the `.env` to `.env.local`. Edit `.env.local` by specifying the [database url](https://symfony.com/doc/current/doctrine.html#configuring-the-database).
 
+```bash
+  # Drop database if previously installed by
+  # ./bin/console doctrine:schema:drop
+
+  # Create database
+  ./bin/console doctrine:schema:create
+
 Generate the security keys:
 
 ```bash

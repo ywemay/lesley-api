@@ -119,14 +119,20 @@ class SaleOrderItem
         return $this;
     }
 
+    /**
+     * @Groups("read")
+     */
     public function getUnitPrice(): ?int
     {
         return $this->unit_price;
     }
 
+    /**
+     * @Groups("write")
+     */
     public function setUnitPrice(int $unit_price): self
     {
-        $this->unit_price = $unit_price;
+        $this->unit_price = intval($unit_price);
         $this->setTotalPrice($this->getQuantity() * $unit_price);
         return $this;
     }
